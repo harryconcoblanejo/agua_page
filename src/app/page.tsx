@@ -5,12 +5,15 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen p-4 bg-[var(--beige)] text-[var(--text-main)]">
       {/* HERO SECTION */}
-      <section className="relative flex flex-col items-center justify-center min-h-[60vh] w-full" style={{background: 'linear-gradient(rgba(60,60,60,0.18),rgba(60,60,60,0.18)), url(/instrumento10.jpg) center/cover no-repeat'}}>
+      <section className="relative flex flex-col items-center justify-center min-h-[60vh] w-full" style={{background: 'linear-gradient(rgba(20,20,20,0.62),rgba(20,20,20,0.62)), url(/instrumento10.jpg) center/cover no-repeat'}}>
         <div className="flex flex-col items-center justify-center py-16 w-full">
           <div className="mb-6 w-full flex justify-center">
             <Image src="/logos/logo 22.png" alt="Logo" width={80} height={80} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-6" style={{color: 'var(--text-main)'}}>Sonidos que guían tu respiración, vibraciones que sanan tu alma</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-6 text-white! drop-shadow-md">
+  Sonidos que guían tu respiración, vibraciones que sanan tu alma
+</h1>
+
           <button className="btn mt-2">Escuchar ahora</button>
         </div>
       </section>
