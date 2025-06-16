@@ -35,7 +35,7 @@ export default function Header() {
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 shadow-md transition-all duration-500">
       <nav className="max-w-5xl mx-auto flex items-center justify-between py-4 px-6">
-        <div className="text-2xl font-bold text-amber-700 transition-colors duration-300">Meditación Sonora</div>
+        <div className="text-2xl font-bold text-amber-700 transition-colors duration-300">Agua Música para Ser</div>
         <ul className="flex gap-8 text-lg font-medium">
           {sections.map((section) => (
             <li key={section.id}>
