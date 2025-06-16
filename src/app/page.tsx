@@ -6,7 +6,32 @@ export default function Home() {
     <main className="pt-24">
       <section id="home" className="min-h-[60vh] flex flex-col justify-center items-center bg-amber-50 py-16">
         <h1 className="text-4xl font-bold text-amber-800 mb-4">Bienvenido a Meditación Sonora</h1>
-        <p className="text-lg text-amber-700 max-w-xl text-center">Explora música y sonidos para meditar, relajarte y conectar con tu interior.</p>
+        <div className="relative w-full max-w-3xl mx-auto mb-8">
+          <Image
+            src="/instrumento10.jpg"
+            alt="Instrumento de Meditación Sonora"
+            width={1200}
+            height={800}
+            className="rounded-lg shadow-xl object-cover w-full h-auto"
+            priority
+          />
+        </div>
+        <p className="text-lg text-amber-700 max-w-xl text-center">Agua Armonización Sonora
+
+          La música terapéutica crea un espacio de relax y bienestar para trabajar
+          en los planos físico, mental, emocional y espiritual.
+          El sonido de cuencos tibetanos, gongs, sitar y otros instrumentos ancestrales nos guian en un viaje sonoro
+          de relajación, introspección y sanación.
+          El agua es fundamental para la existencia de la vida y constituye aproximadamente el 70% de nuestro cuerpo,
+          la vibración sonora modifica su estructura molecular recorriéndonos y trayendo múltiples beneficios:
+
+          - Relaja profundamente.
+          - Alivia el estrés, la ansiedad y las tensiones.
+          - Mejora la concentración y la creatividad.
+          - Equilibra nuestro cuerpo físico, nuestros pensamientos y emociones.
+          - Facilita el acceso a la intuición y a la meditación.
+
+          Te invitamos a participar de esta experiencia de autoconocimiento y sanación.</p>
       </section>
       <section id="about" className="min-h-[40vh] flex flex-col justify-center items-center bg-orange-50 py-16">
         <h2 className="text-3xl font-semibold text-orange-800 mb-2">About</h2>
