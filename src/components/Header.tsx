@@ -48,22 +48,22 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 shadow-md transition-all duration-500">
-      <nav className="w-full max-w-7xl mx-auto flex items-center justify-between py-6 px-12">
-        <div className="flex items-center gap-4">
+    <header className="w-full fixed top-0 left-0 z-50 bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 border-b border-amber-200 shadow-md transition-all duration-500">
+      <nav className="w-full  mx-auto flex items-center justify-between py-4 px-12">
+        <div className="flex items-center gap-4 pl-0">
           <Image
             src="/logos/logo 22.png"
             alt="Logo Agua Música para Ser"
             width={50}
             height={50}
-            className="w-auto h-12"
+            className="w-auto h-12 transition-transform duration-300 hover:scale-105"
           />
-          <div className="text-2xl font-bold text-amber-700 transition-colors duration-300 text-left">Agua Música para Ser</div>
+          <div className="text-2xl font-bold text-amber-700 transition-all duration-300 hover:text-amber-900 text-left">Agua Música para Ser</div>
         </div>
         
         {/* Hamburger Button */}
         <button
-          className="lg:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5"
+          className="lg:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 transition-transform duration-300 hover:scale-110"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -73,15 +73,16 @@ export default function Header() {
         </button>
 
         {/* Navigation Menu */}
-        <ul className={`lg:flex gap-12 text-lg font-medium ml-auto absolute lg:relative top-full left-0 w-full lg:w-auto bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 lg:bg-transparent p-4 lg:p-0 shadow-lg lg:shadow-none transition-all duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible lg:opacity-100 lg:visible'}`}>
+        <ul className={`lg:flex gap-12 text-lg font-medium ml-auto absolute lg:relative top-full left-0 w-full lg:w-auto bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 lg:bg-transparent p-4 lg:p-0 shadow-lg lg:shadow-none transition-all duration-500 ease-in-out ${isMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible lg:opacity-100 lg:visible -translate-y-2 lg:translate-y-0'}`}>
           {sections.map((section) => (
             <li key={section.id} className="py-2 lg:py-0">
               <Link
                 href={`#${section.id}`}
-                className={`${section.color} transition-colors duration-300 block ${active === section.id ? "underline underline-offset-8 decoration-amber-700 font-bold" : ""}`}
+                className={`text-amber-700 hover:text-amber-900 transition-all duration-300 block relative group ${active === section.id ? "font-bold" : ""}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {section.label}
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-amber-700 transition-all duration-300 group-hover:w-full ${active === section.id ? "w-full" : ""}`} />
               </Link>
             </li>
           ))}
