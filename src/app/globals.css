@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -14,18 +14,18 @@
 }
 
 body {
-  font-family: 'Lato', Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   background: var(--beige);
   color: var(--text-main);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', Arial, sans-serif;
   color: var(--text-main);
 }
 
 button, .btn {
-  font-family: 'Lato', Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   border-radius: 9999px;
   background: var(--btn-bg);
   color: var(--white);
