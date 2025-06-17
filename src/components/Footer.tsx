@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
     <footer className="w-full bg-[var(--sage)] border-t border-amber-200 py-6">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 gap-4">
-        <span className="text-[var(--text-main)] font-semibold">© {new Date().getFullYear()} Meditación Sonora</span>
+      <div className=" mx-auto flex flex-col md:flex-row items-center justify-between px-6 gap-4">
+        <span className="text-[var(--text-main)] font-semibold">© {new Date().getFullYear()} Agua Música para Ser</span>
         <div className="flex gap-6 text-2xl">
           <a href="https://www.instagram.com/aguamusicaparaser/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-pink-600 hover:text-pink-800 transition-colors">
             <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.13.62a1.13 1.13 0 1 1-2.26 0 1.13 1.13 0 0 1 2.26 0z"/></svg>

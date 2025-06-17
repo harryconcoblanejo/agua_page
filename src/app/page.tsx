@@ -1,7 +1,35 @@
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
+import ImageCarousel from "@/components/ImageCarousel";
 
 export default function Home() {
+  const carouselImages = [
+    {
+      src: "/imagenes_sobre_nosotros/IMG_20191208_161406_182.jpg",
+      alt: "Sesión de música y meditación"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/calimba.jpg",
+      alt: "Calimba - Instrumento de percusión"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/agua 5.jpg",
+      alt: "Meditación con sonidos del agua"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/instrumentos 5.jpg",
+      alt: "Colección de instrumentos"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/Gus.jpg",
+      alt: "Gus - Músico y terapeuta"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/IMG-20191206-WA0042.jpg",
+      alt: "Momento de meditación y sonido"
+    }
+  ];
+
   return (
     <main className="flex flex-col min-h-screen p-0 bg-[var(--beige)] text-[var(--text-main)] font-sans">
       {/* HERO */}
@@ -57,23 +85,16 @@ export default function Home() {
           <p className="mb-8 text-lg text-[var(--text-secondary)] max-w-xl">
             Somos un colectivo de músicos, terapeutas y exploradores del sonido. Fusionamos cuencos, flauta nativa, voz armónica y paisajes sonoros naturales.
           </p>
-          <div className="flex gap-10 text-3xl text-[var(--sage-dark)]">
-            {/* Puedes reemplazar estos emojis por SVGs lineales si lo deseas */}
+          {/* <div className="flex gap-10 text-3xl text-[var(--sage-dark)]">
+           
             <span title="Sonido">🔊</span>
             <span title="Naturaleza">🌱</span>
             <span title="Meditación">🧘</span>
             <span title="Música">🎵</span>
-          </div>
+          </div> */}
         </div>
         <div className="flex-1 flex justify-center">
-          <Image
-            src="/agua 5.jpg"
-            alt="Sobre Nosotros"
-            width={340}
-            height={240}
-            className="rounded-2xl object-cover shadow-md"
-            style={{ maxHeight: 220 }}
-          />
+          <ImageCarousel images={carouselImages} />
         </div>
       </section>
 
@@ -83,52 +104,43 @@ export default function Home() {
           className="text-3xl mb-8"
           style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--beige-dark)" }}
         >
-          Música
+         Videos
         </h2>
-        <div className="flex flex-col md:flex-row gap-8 items-center">
-          {/* Reproductor */}
-          <div className="bg-[var(--beige-dark)] rounded-xl p-6 flex-1 min-w-[260px] shadow flex flex-col items-center max-w-md">
-            <div className="mb-2 font-semibold text-[var(--text-main)]" style={{ fontFamily: "Roboto, Arial, sans-serif" }}>
-              Chakras Sounds Vol. I
-            </div>
-            {/* Barra de progreso simulada */}
-            <div className="w-full h-2 bg-[var(--sage)] rounded mb-4">
-              <div className="h-2 bg-[var(--sage-dark)] rounded" style={{ width: "48%" }} />
-            </div>
-            {/* Controles */}
-            <div className="flex items-center gap-4">
-              <button className="text-2xl text-[var(--sage-dark)] hover:text-[var(--text-main)] transition">⏮️</button>
-              <button className="text-2xl text-[var(--sage-dark)] hover:text-[var(--text-main)] transition">▶️</button>
-              <button className="text-2xl text-[var(--sage-dark)] hover:text-[var(--text-main)] transition">⏭️</button>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* First YouTube Video Embed */}
+          <div className="w-full">
+            <div className="relative pb-[56.25%] h-0">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-xl"
+                src="https://www.youtube.com/embed/EwJkvcYG5i4"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
-          {/* Imágenes de álbumes/canciones */}
-          <div className="flex-1 flex flex-row gap-6 justify-center">
-            <div className="flex flex-col items-center">
-              <Image
-                src="/agua 5.jpg"
-                alt="Sonidos del Alba"
-                width={160}
-                height={120}
-                className="rounded-xl object-cover"
-                style={{ aspectRatio: "1/1", maxHeight: 120 }}
-              />
-              <div className="mt-2 text-[var(--beige-dark)]" style={{ fontFamily: "Roboto, Arial, sans-serif" }}>
-                Sonidos del Alba
-              </div>
+          {/* Second YouTube Video Embed */}
+          <div className="w-full">
+            <div className="relative pb-[56.25%] h-0">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-xl"
+                src="https://www.youtube.com/embed/gN6cQ4xk-HI"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
-            <div className="flex flex-col items-center">
-              <Image
-                src="/instrumento10.jpg"
-                alt="Live en el bosque sagrado"
-                width={160}
-                height={120}
-                className="rounded-xl object-cover"
-                style={{ aspectRatio: "1/1", maxHeight: 120 }}
-              />
-              <div className="mt-2 text-[var(--beige-dark)]" style={{ fontFamily: "Roboto, Arial, sans-serif" }}>
-                Live en el bosque sagrado
-              </div>
+          </div>
+          {/* Third YouTube Video Embed */}
+          <div className="w-full">
+            <div className="relative pb-[56.25%] h-0">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-xl"
+                src="https://www.youtube.com/embed/OG9toS1u10s"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
         </div>
