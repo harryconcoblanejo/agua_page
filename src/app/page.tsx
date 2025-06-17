@@ -163,12 +163,12 @@ export default function Home() {
               Concierto meditativo con sonido envolvente y sesión de reiki colectivo
             </div>
           </div>
-          <button
+          {/* <button
             className="px-8 py-2 rounded-full bg-[var(--sage-dark)] text-white font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--text-main)]"
             style={{ fontFamily: "Roboto, Arial, sans-serif" }}
           >
             Ver más
-          </button>
+          </button> */}
         </div>
       </section>
     </main>
