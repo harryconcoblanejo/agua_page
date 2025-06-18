@@ -169,16 +169,15 @@ export default function Home() {
     <EventosProvider>
       <main className="flex flex-col min-h-screen p-0 bg-[var(--beige)] text-[var(--text-main)] font-sans">
         {/* HERO */}
-        <section className="relative flex flex-col items-center justify-center min-h-[50vh] md:min-h-[70vh] w-full overflow-hidden">
+        <section className="relative flex flex-col items-center justify-center min-h-[40vh] md:min-h-[60vh] w-full overflow-hidden">
           {/* Fondo con blur y overlay oscuro */}
           <div className="absolute inset-0 z-0">
             <Image
               src="/instrumento10.jpg"
               alt="Fondo"
-              // className="w-full h-full object-cover"
-              // style={{ filter: "blur(1px) brightness(1)" }}
-              width={1000}
-              height={1000}
+              fill
+              className="object-cover"
+              priority
             />
             <div className="absolute inset-0 bg-black/50" />
           </div>
