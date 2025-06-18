@@ -24,8 +24,11 @@ export default function EditCarouselForm({ initialImages, onSave, onCancel }: Ed
     const files = Array.from(e.target.files);
     const uploadedImages: CarouselImage[] = [];
     for (const file of files) {
-      // Sube directamente a Vercel Blob
-      const { url } = await upload(file.name, file, { access: 'public' });
+      // Sube directamente a Vercel Blob usando el endpoint de autorización
+      const { url } = await upload(file.name, file, {
+        access: 'public',
+        handleUploadUrl: '/api/blob-upload-url'
+      });
       // Guarda la URL en la base de datos
       const res = await fetch('/api/carousel', {
         method: 'POST',
@@ -33,7 +36,6 @@ export default function EditCarouselForm({ initialImages, onSave, onCancel }: Ed
         body: JSON.stringify({ images: [{ src: url, alt: file.name }] })
       });
       if (res.ok) {
-        // Opcional: podrías obtener el id de la imagen guardada si tu API lo devuelve
         uploadedImages.push({ src: url, alt: file.name });
       }
     }
