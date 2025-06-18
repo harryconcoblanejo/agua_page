@@ -31,23 +31,8 @@ export default function EditCarouselForm({ initialImages, onSave, onCancel }: Ed
       });
       if (res.ok) {
         const data = await res.json();
-        // Guardar en la base de datos
-        const saveRes = await fetch('/api/carousel', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ images: [{ src: data.src, alt: data.alt }] })
-        });
-        let id;
-        if (saveRes.ok) {
-          // Obtener el id de la imagen recién guardada
-          const all = await fetch('/api/carousel');
-          if (all.ok) {
-            const imgs = await all.json();
-            const found = imgs.find((img: CarouselImage) => img.src === data.src);
-            if (found) id = found.id;
-          }
-        }
-        uploadedImages.push({ id, src: data.src, alt: data.alt });
+        // Guardar en la base de datos (ya lo hace la API, solo agregamos al estado local)
+        uploadedImages.push({ id: data.id, src: data.src, alt: data.alt });
       }
     }
     setImages((prev) => [...prev, ...uploadedImages]);
