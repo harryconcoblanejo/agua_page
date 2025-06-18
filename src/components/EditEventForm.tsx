@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 interface EditEventFormProps {
-  initialTitle: string;
   initialDescription: string;
   initialLink?: string;
   onSave: (title: string, description: string, link: string) => void;
@@ -11,7 +10,7 @@ interface EditEventFormProps {
   onDelete?: () => void;
 }
 
-export default function EditEventForm({ initialTitle, initialDescription, initialLink = '', onSave, onCancel, onDelete }: EditEventFormProps) {
+export default function EditEventForm({ initialDescription, initialLink = '', onSave, onCancel, onDelete }: EditEventFormProps) {
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState(initialDescription);

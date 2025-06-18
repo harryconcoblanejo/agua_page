@@ -12,12 +12,9 @@ interface Event {
 
 interface EventSectionProps {
   events: Event[];
-  onAddEvent: (event: Omit<Event, 'id'>) => void;
-  onEditEvent: (id: number, updatedEvent: Omit<Event, 'id'>) => void;
-  onDeleteEvent: (id: number) => void;
 }
 
-const EventSection: React.FC<EventSectionProps> = ({ events, onAddEvent, onEditEvent, onDeleteEvent }) => {
+const EventSection: React.FC<EventSectionProps> = ({ events }) => {
   const [clickCount, setClickCount] = useState(0);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);

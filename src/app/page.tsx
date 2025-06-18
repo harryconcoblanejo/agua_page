@@ -24,11 +24,11 @@ interface CarouselImage {
 
 export default function Home() {
   const [aboutText, setAboutText] = useState('');
-  const [aboutClickCount, setAboutClickCount] = useState(0);
   const [showEditAbout, setShowEditAbout] = useState(false);
   const [showEditCarousel, setShowEditCarousel] = useState(false);
   const [carouselImages, setCarouselImages] = useState<CarouselImage[]>([]);
   const [carouselClickCount, setCarouselClickCount] = useState(0);
+  const [aboutClickCount, setAboutClickCount] = useState(0);
   const [eventClickCount, setEventClickCount] = useState(0);
 
   const router = useRouter();
@@ -53,6 +53,20 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (carouselClickCount === 10) {
+      setShowEditCarousel(true);
+      setCarouselClickCount(0);
+    }
+  }, [carouselClickCount]);
+
+  useEffect(() => {
+    if (aboutClickCount === 10) {
+      setShowEditAbout(true);
+      setAboutClickCount(0);
+    }
+  }, [aboutClickCount]);
+
+  useEffect(() => {
     if (eventClickCount === 10) {
       router.push('/admin/eventos');
       setEventClickCount(0);
@@ -60,14 +74,7 @@ export default function Home() {
   }, [eventClickCount, router]);
 
   const handleTitleClick = () => {
-    setAboutClickCount(prev => {
-      const newCount = prev + 1;
-      if (newCount === 10) {
-        setShowEditAbout(true);
-        return 0;
-      }
-      return newCount;
-    });
+    setAboutClickCount(prev => prev + 1);
   };
 
   const handleSave = (newText: string) => {
@@ -153,14 +160,7 @@ export default function Home() {
 
   // Lógica para 10 clicks en el carrusel
   const handleCarouselTitleClick = () => {
-    setCarouselClickCount(prev => {
-      const newCount = prev + 1;
-      if (newCount === 10) {
-        setShowEditCarousel(true);
-        return 0;
-      }
-      return newCount;
-    });
+    setCarouselClickCount(prev => prev + 1);
   };
 
   // Guardar imágenes del carrusel en la base de datos

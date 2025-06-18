@@ -67,7 +67,7 @@ const AdminEventosPage = () => {
       initial[ev.id] = { date: ev.date, place: ev.place, description: ev.description, link: ev.link };
     });
     setEditStates(initial);
-  }, [events.length]);
+  }, [events]);
 
   const handleEditChange = (id: number, field: keyof Omit<Event, "id">, value: string) => {
     setEditStates((prev) => ({
