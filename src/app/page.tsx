@@ -1,21 +1,12 @@
 'use client';
 
-import Image from "next/image";
-import ContactForm from "@/components/ContactForm";
+
 import ImageCarousel from "@/components/ImageCarousel";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { EventosProvider, useEventos } from "@/context/EventosContext";
 import EditAboutForm from "@/components/EditAboutForm"; // Asegúrate de que la ruta sea correcta
 import EditCarouselForm from "@/components/EditCarouselForm";
-
-interface Event {
-  id: number;
-  date: string;
-  place: string;
-  description: string;
-  link: string;
-}
 
 interface CarouselImage {
   src: string;
@@ -75,15 +66,6 @@ export default function Home() {
 
   const handleTitleClick = () => {
     setAboutClickCount(prev => prev + 1);
-  };
-
-  const handleSave = (newText: string) => {
-    setAboutText(newText);
-    // Here you would typically also save to your backend
-  };
-
-  const handleCancel = () => {
-    // Eliminadas referencias a setIsEditing y isEditing
   };
 
   const formatDateToSpanish = (dateStr: string) => {

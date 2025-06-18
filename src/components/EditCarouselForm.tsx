@@ -43,7 +43,7 @@ export default function EditCarouselForm({ initialImages, onSave, onCancel }: Ed
           const all = await fetch('/api/carousel');
           if (all.ok) {
             const imgs = await all.json();
-            const found = imgs.find((img: any) => img.src === data.src);
+            const found = imgs.find((img: CarouselImage) => img.src === data.src);
             if (found) id = found.id;
           }
         }
