@@ -208,7 +208,7 @@ export default function Home() {
         <section className="bg-[var(--beige-dark)] w-full flex flex-col md:flex-row items-center gap-8 px-8 py-16">
           <div className="flex-1">
             <h2
-              className="text-3xl mb-4 "
+              className="text-3xl mb-4"
               style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
               onClick={handleTitleClick}
             >
@@ -257,30 +257,10 @@ export default function Home() {
               </p>
             )}
           </div>
-          <div className="flex-1 flex flex-col items-center">
-            {/* <h3
-              className="text-xl font-semibold mb-2 cursor-pointer"
-              style={{ color: "var(--sage-dark)" }}
-              onClick={handleCarouselTitleClick}
-            >
-              Carrusel de imágenes
-            </h3> */}
-            {showEditCarousel ? (
-              <EditCarouselForm
-                initialImages={carouselImages}
-                onSave={handleSaveCarousel}
-                onCancel={() => setShowEditCarousel(false)}
-              />
-            ) : (
-              carouselImages.length === 0 ? (
-                <div className="text-center py-8 text-[var(--text-secondary)]"   onClick={handleCarouselTitleClick}>no hay imagenes</div>
-              ) : (
-                <div onClick={handleCarouselTitleClick}>
-                  <ImageCarousel images={carouselImages} />
-                </div>
-                
-              )
-            )}
+          <div className="flex-1 flex justify-center items-center">
+            <div className="w-full max-w-xl h-[200px] sm:h-[300px] md:h-[400px] overflow-hidden rounded-2xl shadow-lg">
+              <img src="/agua 5.jpg" alt="Imagen fija del carrusel" className="w-full h-full object-cover rounded-2xl" />
+            </div>
           </div>
         </section>
 
