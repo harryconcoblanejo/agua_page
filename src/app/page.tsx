@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { EventosProvider, useEventos } from "@/context/EventosContext";
 import EditAboutForm from "@/components/EditAboutForm"; // Asegúrate de que la ruta sea correcta
 import EditCarouselForm from "@/components/EditCarouselForm";
+import Image from "next/image";
 
 interface CarouselImage {
   src: string;
@@ -171,11 +172,13 @@ export default function Home() {
         <section className="relative flex flex-col items-center justify-center min-h-[50vh] md:min-h-[70vh] w-full overflow-hidden">
           {/* Fondo con blur y overlay oscuro */}
           <div className="absolute inset-0 z-0">
-            <img
+            <Image
               src="/instrumento10.jpg"
               alt="Fondo"
-              className="w-full h-full object-cover"
-              style={{ filter: "blur(1px) brightness(1)" }}
+              // className="w-full h-full object-cover"
+              // style={{ filter: "blur(1px) brightness(1)" }}
+              width={1000}
+              height={1000}
             />
             <div className="absolute inset-0 bg-black/50" />
           </div>
