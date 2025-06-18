@@ -15,9 +15,9 @@ const allura = Allura({
 export const metadata: Metadata = {
   title: "Agua música para Ser",
   description: "Colectivo de músicos y terapeutas del sonido",
-  // icons: {
-  //   icon: "/favicon.png",
-  // },
+  icons: {
+    icon: "/logo22.png",
+  },
 };
 
 export default function RootLayout({
