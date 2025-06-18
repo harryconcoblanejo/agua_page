@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Andalusia';
+  src: url('/ANDALUSIA (1).TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --beige: #f5f1e6;
   --beige-dark: #e9e4d7;

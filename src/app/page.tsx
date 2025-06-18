@@ -1,25 +1,14 @@
 'use client';
 
-
-import ImageCarousel from "@/components/ImageCarousel";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { EventosProvider, useEventos } from "@/context/EventosContext";
-import EditAboutForm from "@/components/EditAboutForm"; // Asegúrate de que la ruta sea correcta
-import EditCarouselForm from "@/components/EditCarouselForm";
+import EditAboutForm from "@/components/EditAboutForm";
 import Image from "next/image";
-
-interface CarouselImage {
-  src: string;
-  alt: string;
-}
 
 export default function Home() {
   const [aboutText, setAboutText] = useState('');
   const [showEditAbout, setShowEditAbout] = useState(false);
-  const [showEditCarousel, setShowEditCarousel] = useState(false);
-  const [carouselImages, setCarouselImages] = useState<CarouselImage[]>([]);
-  const [carouselClickCount, setCarouselClickCount] = useState(0);
   const [aboutClickCount, setAboutClickCount] = useState(0);
   const [eventClickCount, setEventClickCount] = useState(0);
 
@@ -33,23 +22,6 @@ export default function Home() {
         if (data && data.text) setAboutText(data.text);
       });
   }, []);
-
-  // Cargar imágenes del carrusel desde la base de datos
-  useEffect(() => {
-    fetch("/api/carousel")
-      .then(res => res.ok ? res.json() : [])
-      .then(data => {
-        if (Array.isArray(data)) setCarouselImages(data as CarouselImage[]);
-      })
-      .catch(() => setCarouselImages([]));
-  }, []);
-
-  useEffect(() => {
-    if (carouselClickCount === 10) {
-      setShowEditCarousel(true);
-      setCarouselClickCount(0);
-    }
-  }, [carouselClickCount]);
 
   useEffect(() => {
     if (aboutClickCount === 10) {
@@ -141,26 +113,6 @@ export default function Home() {
     );
   }
 
-  // Lógica para 10 clicks en el carrusel
-  const handleCarouselTitleClick = () => {
-    setCarouselClickCount(prev => prev + 1);
-  };
-
-  // Guardar imágenes del carrusel en la base de datos
-  const handleSaveCarousel = async (images: { src: string; alt: string }[]) => {
-    await fetch("/api/carousel", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ images })
-    });
-    try {
-      setCarouselImages(images as CarouselImage[]);
-    } catch (error) {
-      console.error('Error setting carousel images:', error);
-    }
-    setShowEditCarousel(false);
-  };
-
   const handleEventTitleClick = () => {
     setEventClickCount(prev => prev + 1);
   };
@@ -191,9 +143,9 @@ export default function Home() {
                 textShadow: "0 2px 16px rgba(0,0,0,0.18)",
               }}
             >
-              <span style={{ fontFamily: "var(--font-allura)", fontSize: "2.5em" }}>Agua</span>
+              <span style={{ fontFamily: "Andalusia, serif", fontSize: "4.5em", fontWeight: "normal" }}>Agua</span>
               <br />
-              <span className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-roboto)", fontSize: "1em" }}  >Música para Ser</span>
+              <span className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-roboto)", fontSize: "1em", fontWeight: "normal" }}  >Música para Ser</span>
             </h1>
             <button
               className="mt-8 md:mt-12 px-6 md:px-8 py-2 rounded-full bg-white text-[var(--sage-dark)] font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--sage)] hover:text-white text-sm md:text-base"
