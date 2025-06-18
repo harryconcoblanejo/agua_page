@@ -1,13 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: 'Andalusia';
-  src: url('/ANDALUSIA (1).TTF') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --beige: #f5f1e6;
   --beige-dark: #e9e4d7;
@@ -53,7 +45,7 @@ button:hover, .btn:hover {
 
 /* Clases de utilidad para fuentes */
 .font-andalusia {
-  font-family: 'Andalusia', serif;
+  font-family: var(--font-andalusia), serif;
 }
 
 .font-roboto {

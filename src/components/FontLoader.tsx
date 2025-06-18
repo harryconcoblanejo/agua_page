@@ -20,36 +20,8 @@ export default function FontLoader({ children }: { children: React.ReactNode }) 
       }
     };
 
-    // Precargar fuentes críticas
-    const preloadFonts = async () => {
-      try {
-        // Precargar Roboto desde Google Fonts
-        const robotoLink = document.createElement('link');
-        robotoLink.rel = 'preload';
-        robotoLink.as = 'font';
-        robotoLink.type = 'font/woff2';
-        robotoLink.href = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2';
-        robotoLink.crossOrigin = 'anonymous';
-        document.head.appendChild(robotoLink);
-
-        // Precargar Andalusia
-        const andalusiaLink = document.createElement('link');
-        andalusiaLink.rel = 'preload';
-        andalusiaLink.as = 'font';
-        andalusiaLink.type = 'font/ttf';
-        andalusiaLink.href = '/ANDALUSIA (1).TTF';
-        document.head.appendChild(andalusiaLink);
-
-        // Verificar carga de fuentes
-        checkFontsLoaded();
-      } catch (error) {
-        console.warn('Error preloading fonts:', error);
-        // Si hay error, continuar de todas formas
-        setFontsLoaded(true);
-      }
-    };
-
-    preloadFonts();
+    // Verificar carga de fuentes
+    checkFontsLoaded();
   }, []);
 
   if (!fontsLoaded) {

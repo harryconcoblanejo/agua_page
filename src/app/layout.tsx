@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Allura } from "next/font/google";
 import { Roboto } from "next/font/google";
+import { Andalusia } from "@/fonts/andalusia";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import FontLoader from "@/components/FontLoader";
@@ -44,14 +45,8 @@ export default function RootLayout({
           type="font/woff2" 
           crossOrigin="anonymous" 
         />
-        <link 
-          rel="preload" 
-          href="/ANDALUSIA (1).TTF" 
-          as="font" 
-          type="font/ttf" 
-        />
       </head>
-      <body className={`${inter.className} ${allura.variable} ${roboto.variable} antialiased`}>
+      <body className={`${inter.className} ${allura.variable} ${roboto.variable} ${Andalusia.variable} antialiased`}>
         <FontLoader>
           {/* <Header /> */}
           {children}
