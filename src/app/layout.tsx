@@ -27,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <link rel="icon" type="image/png" href="/logo22.png" />
+      </head>
       <body className={`${inter.className} ${allura.variable} antialiased`}>
         {/* <Header /> */}
         {children}

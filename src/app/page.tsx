@@ -23,32 +23,15 @@ interface CarouselImage {
 }
 
 export default function Home() {
-  const [clickCount, setClickCount] = useState(0);
   const [aboutText, setAboutText] = useState('');
-
-  const [eventClickCount, setEventClickCount] = useState(0);
-  const [events, setEvents] = useState<Event[]>([]); // SIEMPRE INICIA VACÍO
+  const [aboutClickCount, setAboutClickCount] = useState(0);
   const [showEditAbout, setShowEditAbout] = useState(false);
   const [showEditCarousel, setShowEditCarousel] = useState(false);
   const [carouselImages, setCarouselImages] = useState<CarouselImage[]>([]);
   const [carouselClickCount, setCarouselClickCount] = useState(0);
+  const [eventClickCount, setEventClickCount] = useState(0);
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (eventClickCount === 10) {
-      router.push('/admin/eventos');
-      setEventClickCount(0);
-    }
-  }, [eventClickCount, router]);
-
-  // Carga los eventos desde localStorage solo en el cliente
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedEvents = localStorage.getItem('events');
-      if (savedEvents) setEvents(JSON.parse(savedEvents));
-    }
-  }, []);
 
   // Obtener el texto de Sobre Nosotros desde la base de datos
   useEffect(() => {
@@ -69,8 +52,15 @@ export default function Home() {
       .catch(() => setCarouselImages([]));
   }, []);
 
+  useEffect(() => {
+    if (eventClickCount === 10) {
+      router.push('/admin/eventos');
+      setEventClickCount(0);
+    }
+  }, [eventClickCount, router]);
+
   const handleTitleClick = () => {
-    setClickCount(prev => {
+    setAboutClickCount(prev => {
       const newCount = prev + 1;
       if (newCount === 10) {
         setShowEditAbout(true);
@@ -87,26 +77,6 @@ export default function Home() {
 
   const handleCancel = () => {
     // Eliminadas referencias a setIsEditing y isEditing
-  };
-
-  const handleAddEvent = () => {
-    setEvents((prev: Event[]) => [...prev, {
-      id: Date.now(),
-      date: "",
-      place: "",
-      description: "",
-      link: ""
-    }]);
-  };
-
-  const handleUpdateEvent = (id: number, date: string, place: string, description: string, link: string) => {
-    setEvents((prev: Event[]) => prev.map((event: Event) =>
-      event.id === id ? { ...event, date, place, description, link } : event
-    ));
-  };
-
-  const handleDeleteEvent = (id: number) => {
-    setEvents((prev: Event[]) => prev.filter((event: Event) => event.id !== id));
   };
 
   const formatDateToSpanish = (dateStr: string) => {
@@ -206,6 +176,10 @@ export default function Home() {
       console.error('Error setting carousel images:', error);
     }
     setShowEditCarousel(false);
+  };
+
+  const handleEventTitleClick = () => {
+    setEventClickCount(prev => prev + 1);
   };
 
   return (
@@ -375,7 +349,7 @@ export default function Home() {
         </section>
 
         {/* PRÓXIMOS EVENTOS */}
-        <EventosSection onSecretClick={() => setEventClickCount(c => c + 1)} />
+        <EventosSection onSecretClick={handleEventTitleClick} />
       </main>
     </EventosProvider>
   );

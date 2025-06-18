@@ -76,6 +76,14 @@ export default function EditCarouselForm({ initialImages, onSave, onCancel }: Ed
     onSave(images);
   };
 
+  const handleImageFieldChange = (index: number, field: keyof CarouselImage, value: string) => {
+    setImages((prev) =>
+      prev.map((img, i) =>
+        i === index ? { ...img, [field]: value } : img
+      )
+    );
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mb-8 w-full md:max-w-xl">
       <div className="flex flex-wrap gap-4 mb-4">

@@ -13,24 +13,22 @@ interface ImageCarouselProps {
 export default function ImageCarousel({ images }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Si no hay imágenes, no renderizar nada
-  if (!images || images.length === 0) {
-    return null;
-  }
-
-  const goToNext = () => {
-    const isLastSlide = currentIndex === images.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-  };
-
   useEffect(() => {
+    if (!images || images.length === 0) return;
     const interval = setInterval(() => {
-      goToNext();
+      setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 3000);
-
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [images]);
+
+  // Si no hay imágenes, mostrar mensaje y no renderizar nada más
+  if (!images || images.length === 0) {
+    return (
+      <div className="text-center w-full text-[var(--text-secondary)] py-8">
+        no hay imagenes, no busques imagenes que no existen
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-xl mx-auto">
