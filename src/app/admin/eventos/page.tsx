@@ -12,9 +12,31 @@ interface Event {
 
 function formatDateToSpanish(dateStr: string | null) {
   if (!dateStr) return "";
-  const date = new Date(dateStr);
+  
+  const [yearStr, monthStr, dayStr] = dateStr.split('-');
+  const date = new Date(Number(yearStr), Number(monthStr) - 1, Number(dayStr));
+  
   if (isNaN(date.getTime())) return dateStr;
-  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
+  
+  const months = {
+    0: 'enero',
+    1: 'febrero',
+    2: 'marzo',
+    3: 'abril',
+    4: 'mayo',
+    5: 'junio',
+    6: 'julio',
+    7: 'agosto',
+    8: 'septiembre',
+    9: 'octubre',
+    10: 'noviembre',
+    11: 'diciembre'
+  };
+
+  const formattedDay = date.getDate();
+  const monthName = months[date.getMonth() as keyof typeof months];
+
+  return `${formattedDay} de ${monthName}`;
 }
 
 const AdminEventosPage = () => {

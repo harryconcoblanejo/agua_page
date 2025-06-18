@@ -17,49 +17,20 @@ interface Event {
   link: string;
 }
 
+interface CarouselImage {
+  src: string;
+  alt: string;
+}
+
 export default function Home() {
   const [clickCount, setClickCount] = useState(0);
-  const [aboutText, setAboutText] = useState(`Del yoga aprendimos la calma.
-Del arte marcial, la disciplina.
-De la música, el lenguaje del alma.
-
-Somos Gustavo Nemitz (músico y profesor de yoga) y Rodrigo López (músico, terapeuta corporal y profesor de Ninjutsu).
-Combinamos nuestras trayectorias para ofrecer experiencias donde cuerpo, respiración y sonido trabajan juntos para generar presencia y equilibrio.
-
-A través de la armonización sonora, el yoga con música en vivo, las meditaciones guiadas y otros espacios de introspección, buscamos facilitar estados de conciencia, descanso y conexión interna.
-
-Una propuesta para quienes buscan armonía, serenidad y energía vital desde una mirada integral y respetuosa..`);
+  const [aboutText, setAboutText] = useState('');
 
   const [eventClickCount, setEventClickCount] = useState(0);
   const [events, setEvents] = useState<Event[]>([]); // SIEMPRE INICIA VACÍO
   const [showEditAbout, setShowEditAbout] = useState(false);
   const [showEditCarousel, setShowEditCarousel] = useState(false);
-  const [carouselImages, setCarouselImages] = useState([
-    {
-      src: "/imagenes_sobre_nosotros/IMG_20191208_161406_182.jpg",
-      alt: "Sesión de música y meditación"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/calimba.jpg",
-      alt: "Calimba - Instrumento de percusión"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/agua 5.jpg",
-      alt: "Meditación con sonidos del agua"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/instrumentos 5.jpg",
-      alt: "Colección de instrumentos"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/Gus.jpg",
-      alt: "Gus - Músico y terapeuta"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/IMG-20191206-WA0042.jpg",
-      alt: "Momento de meditación y sonido"
-    }
-  ]);
+  const [carouselImages, setCarouselImages] = useState<CarouselImage[]>([]);
   const [carouselClickCount, setCarouselClickCount] = useState(0);
 
   const router = useRouter();
@@ -93,7 +64,7 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
     fetch("/api/carousel")
       .then(res => res.ok ? res.json() : [])
       .then(data => {
-        if (Array.isArray(data)) setCarouselImages(data);
+        if (Array.isArray(data)) setCarouselImages(data as CarouselImage[]);
       })
       .catch(() => setCarouselImages([]));
   }, []);
@@ -140,9 +111,18 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
 
   const formatDateToSpanish = (dateStr: string) => {
     if (!dateStr) return "";
-    const date = new Date(dateStr);
+    // Extraer solo la parte de la fecha si viene en formato ISO
+    const cleanDate = dateStr.split('T')[0];
+    const [yearStr, monthStr, dayStr] = cleanDate.split('-');
+    const date = new Date(Number(yearStr), Number(monthStr) - 1, Number(dayStr));
     if (isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
+    const months = {
+      0: 'enero', 1: 'febrero', 2: 'marzo', 3: 'abril', 4: 'mayo', 5: 'junio',
+      6: 'julio', 7: 'agosto', 8: 'septiembre', 9: 'octubre', 10: 'noviembre', 11: 'diciembre'
+    };
+    const formattedDay = date.getDate();
+    const monthName = months[date.getMonth() as keyof typeof months];
+    return `${formattedDay} de ${monthName}`;
   };
 
   function EventosSection({ onSecretClick }: { onSecretClick: () => void }) {
@@ -150,7 +130,7 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
     return (
       <section className="bg-[var(--beige-dark)] w-full px-4 sm:px-8 py-12 sm:py-16 flex-1 flex flex-col justify-end">
         <h2
-          className="text-3xl mb-6 hover:opacity-80 transition text-center"
+          className="text-3xl mb-6  text-center"
           style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
           onClick={onSecretClick}
         >
@@ -165,21 +145,21 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
             eventos.map((event) => (
               <div
                 key={event.id}
-                className="bg-white/50 shadow-lg border border-[var(--sage-dark)]/20 rounded-xl p-5 flex flex-col gap-2 min-h-[170px]"
+                className="bg-white/50 shadow-lg border border-[var(--sage-dark)]/20 rounded-xl p-4 flex flex-col gap-2 min-h-[150px] max-w-md"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="inline-block w-2 h-2 rounded-full bg-[var(--sage-dark)] mr-2"></span>
-                  <span className="font-semibold text-[var(--text-main)] text-xl" style={{ fontFamily: 'Roboto, Arial, sans-serif' }}>
+                  <span className="font-semibold text-[var(--text-main)] text-lg" style={{ fontFamily: 'Roboto, Arial, sans-serif' }}>
                     {formatDateToSpanish(event.date || "")}
                   </span>
                 </div>
                 {event.place && (
-                  <div className="text-[var(--text-secondary)] text-lg font-medium truncate" title={event.place}>
+                  <div className="text-[var(--text-secondary)] text-base font-medium truncate" title={event.place}>
                     {event.place}
                   </div>
                 )}
                 {event.description && (
-                  <div className="text-[var(--text-main)] text-base mt-1 line-clamp-3">
+                  <div className="text-[var(--text-main)] text-sm mt-1 line-clamp-3">
                     {event.description}
                   </div>
                 )}
@@ -220,7 +200,11 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ images })
     });
-    setCarouselImages(images);
+    try {
+      setCarouselImages(images as CarouselImage[]);
+    } catch (error) {
+      console.error('Error setting carousel images:', error);
+    }
     setShowEditCarousel(false);
   };
 
@@ -266,7 +250,7 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
         <section className="bg-[var(--beige-dark)] w-full flex flex-col md:flex-row items-center gap-8 px-8 py-16">
           <div className="flex-1">
             <h2
-              className="text-3xl mb-4 cursor-pointer"
+              className="text-3xl mb-4 "
               style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
               onClick={handleTitleClick}
             >
@@ -276,13 +260,36 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
               <EditAboutForm
                 initialText={aboutText}
                 onSave={async (newText) => {
-                  await fetch("/api/about", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text: newText })
-                  });
-                  setAboutText(newText);
-                  setShowEditAbout(false);
+                  try {
+                    console.log('Sending request to update about text:', newText);
+                    const response = await fetch("/api/about", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                      },
+                      body: JSON.stringify({ text: newText })
+                    });
+
+                    console.log('Response status:', response.status);
+                    const data = await response.json();
+                    console.log('Response data:', data);
+
+                    if (!response.ok) {
+                      throw new Error(data.error || 'Error al guardar el texto');
+                    }
+
+                    if (!data || !data.text) {
+                      throw new Error('Respuesta inválida del servidor');
+                    }
+
+                    console.log('Successfully updated about text:', data);
+                    setAboutText(data.text);
+                    setShowEditAbout(false);
+                  } catch (error) {
+                    console.error('Error saving about text:', error);
+                    alert(error instanceof Error ? error.message : 'Error al guardar el texto');
+                  }
                 }}
                 onCancel={() => setShowEditAbout(false)}
               />
@@ -293,13 +300,13 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
             )}
           </div>
           <div className="flex-1 flex flex-col items-center">
-            <h3
+            {/* <h3
               className="text-xl font-semibold mb-2 cursor-pointer"
               style={{ color: "var(--sage-dark)" }}
               onClick={handleCarouselTitleClick}
             >
               Carrusel de imágenes
-            </h3>
+            </h3> */}
             {showEditCarousel ? (
               <EditCarouselForm
                 initialImages={carouselImages}
@@ -308,18 +315,21 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
               />
             ) : (
               carouselImages.length === 0 ? (
-                <div className="text-center py-8 text-[var(--text-secondary)]">no hay imagenes</div>
+                <div className="text-center py-8 text-[var(--text-secondary)]"   onClick={handleCarouselTitleClick}>no hay imagenes</div>
               ) : (
-                <ImageCarousel images={carouselImages} />
+                <div onClick={handleCarouselTitleClick}>
+                  <ImageCarousel images={carouselImages} />
+                </div>
+                
               )
             )}
           </div>
         </section>
 
-        {/* MÚSICA */}
+        {/* VIDEOS */}
         <section className="bg-[var(--sage)] w-full px-8 py-16">
           <h2
-            className="text-3xl mb-8"
+            className="text-3xl mb-6 text-center"
             style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--beige-dark)" }}
           >
             Videos
