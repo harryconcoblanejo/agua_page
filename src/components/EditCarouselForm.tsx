@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { upload } from '@vercel/blob/client';
 
 interface CarouselImage {
   id?: number;
@@ -17,22 +18,23 @@ interface EditCarouselFormProps {
 export default function EditCarouselForm({ initialImages, onSave, onCancel }: EditCarouselFormProps) {
   const [images, setImages] = useState<CarouselImage[]>(initialImages);
 
-  // Subida real de archivos
+  // Subida real de archivos directamente a Vercel Blob
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const files = Array.from(e.target.files);
     const uploadedImages: CarouselImage[] = [];
     for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch('/api/carousel/upload', {
+      // Sube directamente a Vercel Blob
+      const { url } = await upload(file.name, file, { access: 'public' });
+      // Guarda la URL en la base de datos
+      const res = await fetch('/api/carousel', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ images: [{ src: url, alt: file.name }] })
       });
       if (res.ok) {
-        const data = await res.json();
-        // Guardar en la base de datos (ya lo hace la API, solo agregamos al estado local)
-        uploadedImages.push({ id: data.id, src: data.src, alt: data.alt });
+        // Opcional: podrías obtener el id de la imagen guardada si tu API lo devuelve
+        uploadedImages.push({ src: url, alt: file.name });
       }
     }
     setImages((prev) => [...prev, ...uploadedImages]);
