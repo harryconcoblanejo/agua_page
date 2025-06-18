@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="w-full bg-[var(--sage)] border-t border-amber-200 py-6">
+    <footer className="w-full bg-[var(--sage)] border-t border-amber-200 py-2 md:py-6">
       <div className=" mx-auto flex flex-col md:flex-row items-center justify-between px-6 gap-4">
         <span className="text-[var(--text-main)] font-semibold">© {new Date().getFullYear()} Agua Música para Ser</span>
         <div className="flex gap-6 text-2xl">
