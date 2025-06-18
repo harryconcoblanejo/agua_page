@@ -1,8 +1,90 @@
+'use client';
+
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import ImageCarousel from "@/components/ImageCarousel";
+import EditAboutForm from "@/components/EditAboutForm";
+import EditEventForm from "@/components/EditEventForm";
+import { useState, useEffect } from "react";
+
+interface Event {
+  id: number;
+  title: string;
+  description: string;
+  link: string;
+}
 
 export default function Home() {
+  const [clickCount, setClickCount] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [aboutText, setAboutText] = useState(`Del yoga aprendimos la calma.
+Del arte marcial, la disciplina.
+De la música, el lenguaje del alma.
+
+Somos Gustavo Nemitz (músico y profesor de yoga) y Rodrigo López (músico, terapeuta corporal y profesor de Ninjutsu).
+Combinamos nuestras trayectorias para ofrecer experiencias donde cuerpo, respiración y sonido trabajan juntos para generar presencia y equilibrio.
+
+A través de la armonización sonora, el yoga con música en vivo, las meditaciones guiadas y otros espacios de introspección, buscamos facilitar estados de conciencia, descanso y conexión interna.
+
+Una propuesta para quienes buscan armonía, serenidad y energía vital desde una mirada integral y respetuosa..`);
+
+  const [eventClickCount, setEventClickCount] = useState(0);
+  const [isEventEditing, setIsEventEditing] = useState(false);
+  const [events, setEvents] = useState<Event[]>(() => {
+    if (typeof window !== 'undefined') {
+      const savedEvents = localStorage.getItem('events');
+      return savedEvents ? JSON.parse(savedEvents) : [];
+    }
+    return [];
+  });
+
+  // Save events to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('events', JSON.stringify(events));
+    }
+  }, [events]);
+
+  const handleTitleClick = () => {
+    setClickCount(prev => {
+      const newCount = prev + 1;
+      if (newCount === 10) {
+        setIsEditing(true);
+        return 0;
+      }
+      return newCount;
+    });
+  };
+
+  const handleSave = (newText: string) => {
+    setAboutText(newText);
+    setIsEditing(false);
+    // Here you would typically also save to your backend
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+
+  const handleAddEvent = () => {
+    setEvents((prev: Event[]) => [...prev, {
+      id: Date.now(),
+      title: "",
+      description: "",
+      link: ""
+    }]);
+  };
+
+  const handleUpdateEvent = (id: number, title: string, description: string, link: string) => {
+    setEvents((prev: Event[]) => prev.map((event: Event) => 
+      event.id === id ? { ...event, title, description, link } : event
+    ));
+  };
+
+  const handleDeleteEvent = (id: number) => {
+    setEvents((prev: Event[]) => prev.filter((event: Event) => event.id !== id));
+  };
+
   const carouselImages = [
     {
       src: "/imagenes_sobre_nosotros/IMG_20191208_161406_182.jpg",
@@ -33,7 +115,7 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen p-0 bg-[var(--beige)] text-[var(--text-main)] font-sans">
       {/* HERO */}
-      <section className="relative flex flex-col items-center justify-center min-h-[70vh] w-full overflow-hidden">
+      <section className="relative flex flex-col items-center justify-center min-h-[50vh] md:min-h-[70vh] w-full overflow-hidden">
         {/* Fondo con blur y overlay oscuro */}
         <div className="absolute inset-0 z-0">
           <img
@@ -45,27 +127,21 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
         {/* Logo y texto */}
-        <div className="relative z-10 flex flex-col items-center justify-center py-20 w-full">
-          {/* <img
-            src="/logos/logo 22.png"
-            alt="Logo Agua Música para Ser"
-            width={90}
-            height={90}
-            className="mb-8"
-            style={{ background: "transparent", borderRadius: 0, boxShadow: "none" }}
-          /> */}
+        <div className="relative z-10 flex flex-col items-center justify-center py-12 md:py-20 w-full px-4">
           <h1
-            className="text-4xl md:text-5xl font-bold text-center mb-8 text-[var(--beige-dark)]! drop-shadow-lg"
+            className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 text-[var(--beige-dark)]! drop-shadow-lg -mt-8 md:-mt-12"
             style={{
               fontFamily: "Roboto, Arial, sans-serif",
               lineHeight: 1.1,
               textShadow: "0 2px 16px rgba(0,0,0,0.18)",
             }}
           >
-           Agua <br /> música para Ser
+            <span style={{ fontFamily: "var(--font-allura)", fontSize: "2.5em" }}>Agua</span>
+            <br />
+            <span className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-roboto)", fontSize: "1em" }}  >Música para Ser</span>
           </h1>
           <button
-            className="mt-2 px-8 py-2 rounded-full bg-white text-[var(--sage-dark)] font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--sage)] hover:text-white"
+            className="mt-8 md:mt-12 px-6 md:px-8 py-2 rounded-full bg-white text-[var(--sage-dark)] font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--sage)] hover:text-white text-sm md:text-base"
             style={{ fontFamily: "Roboto, Arial, sans-serif" }}
           >
            <a href="https://linktr.ee/aguamusicaparaser" target="_blank" rel="noopener noreferrer">Escuchar ahora</a>
@@ -77,14 +153,23 @@ export default function Home() {
       <section className="bg-[var(--beige-dark)] w-full flex flex-col md:flex-row items-center gap-8 px-8 py-16">
         <div className="flex-1">
           <h2
-            className="text-3xl mb-4"
+            className="text-3xl mb-4 cursor-pointer"
             style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
+            onClick={handleTitleClick}
           >
             Sobre Nosotros
           </h2>
-          <p className="mb-8 text-lg text-[var(--text-secondary)] max-w-xl">
-            Somos un colectivo de músicos, terapeutas y exploradores del sonido. Fusionamos cuencos, flauta nativa, voz armónica y paisajes sonoros naturales.
-          </p>
+          {isEditing ? (
+            <EditAboutForm
+              initialText={aboutText}
+              onSave={handleSave}
+              onCancel={handleCancel}
+            />
+          ) : (
+            <p className="mb-8 text-lg text-[var(--text-secondary)] max-w-xl whitespace-pre-line">
+              {aboutText}
+            </p>
+          )}
           {/* <div className="flex gap-10 text-3xl text-[var(--sage-dark)]">
            
             <span title="Sonido">🔊</span>
@@ -149,27 +234,94 @@ export default function Home() {
       {/* PRÓXIMOS EVENTOS */}
       <section className="bg-[var(--beige-dark)] w-full px-8 py-16 flex-1 flex flex-col justify-end">
         <h2
-          className="text-3xl mb-6"
+          className="text-3xl mb-6 cursor-pointer hover:opacity-80 transition"
           style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
+          onClick={() => {
+            setEventClickCount(prev => {
+              const newCount = prev + 1;
+              if (newCount === 10) {
+                setIsEventEditing(true);
+                return 0;
+              }
+              return newCount;
+            });
+          }}
         >
           Próximos eventos
         </h2>
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <div className="font-semibold text-[var(--text-main)]" style={{ fontFamily: "Roboto, Arial, sans-serif" }}>
-              20 Jul — Buenos Aires
+        {isEventEditing ? (
+          <div className="w-full">
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={handleAddEvent}
+                className="px-6 py-2 bg-[var(--sage-dark)] text-white rounded-full hover:bg-[var(--sage)] transition flex items-center gap-2"
+              >
+                <span>+</span> Agregar evento
+              </button>
             </div>
-            <div className="text-[var(--text-secondary)]">
-              Concierto meditativo con sonido envolvente y sesión de reiki colectivo
+            <div className="max-h-[60vh] overflow-y-auto pr-4 space-y-6">
+              {events.length === 0 ? (
+                <div className="text-center py-8 text-[var(--text-secondary)]">
+                  No hay próximos eventos
+                </div>
+              ) : (
+                events.map((event) => (
+                  <div key={event.id}>
+                    <EditEventForm
+                      initialTitle={event.title}
+                      initialDescription={event.description}
+                      initialLink={event.link}
+                      onSave={(title, description, link) => {
+                        handleUpdateEvent(event.id, title, description, link);
+                      }}
+                      onCancel={() => {}}
+                      onDelete={() => handleDeleteEvent(event.id)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={() => setIsEventEditing(false)}
+                className="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition"
+              >
+                Finalizar edición
+              </button>
             </div>
           </div>
-          {/* <button
-            className="px-8 py-2 rounded-full bg-[var(--sage-dark)] text-white font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--text-main)]"
-            style={{ fontFamily: "Roboto, Arial, sans-serif" }}
-          >
-            Ver más
-          </button> */}
-        </div>
+        ) : (
+          <div className="max-h-[60vh] overflow-y-auto pr-4 space-y-6">
+            {events.length === 0 ? (
+              <div className="text-center py-8 text-[var(--text-secondary)]">
+                No hay próximos eventos
+              </div>
+            ) : (
+              events.map((event) => (
+                <div key={event.id} className="bg-white/5 p-4 rounded-lg border border-[var(--sage-dark)]/10">
+                  <div>
+                    <div className="font-semibold text-[var(--text-main)]" style={{ fontFamily: "Roboto, Arial, sans-serif" }}>
+                      {event.title}
+                    </div>
+                    <div className="text-[var(--text-secondary)] mt-2">
+                      {event.description}
+                    </div>
+                    {event.link && (
+                      <a 
+                        href={event.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[var(--sage-dark)] hover:underline mt-3 inline-block"
+                      >
+                        Ver más información
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </section>
     </main>
   );

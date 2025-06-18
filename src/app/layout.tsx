@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Allura } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
+const inter = Inter({ subsets: ["latin"] });
+const allura = Allura({ 
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-allura"
+});
+
 export const metadata: Metadata = {
-  title: "Agua Música para Ser",
-  description: "Meditación Sonora - Música y sonidos para meditar y relajarte",
+  title: "Agua música para Ser",
+  description: "Colectivo de músicos y terapeutas del sonido",
   // icons: {
   //   icon: "/favicon.png",
   // },
@@ -18,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="antialiased">
+      <body className={`${inter.className} ${allura.variable} antialiased`}>
         {/* <Header /> */}
         {children}
         <Footer />
