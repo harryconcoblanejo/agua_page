@@ -3,11 +3,11 @@
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import ImageCarousel from "@/components/ImageCarousel";
-import EditAboutForm from "@/components/EditAboutForm";
-import EditEventForm from "@/components/EditEventForm";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { EventosProvider, useEventos } from "@/context/EventosContext";
+import EditAboutForm from "@/components/EditAboutForm"; // Asegúrate de que la ruta sea correcta
+import EditCarouselForm from "@/components/EditCarouselForm";
 
 interface Event {
   id: number;
@@ -19,7 +19,6 @@ interface Event {
 
 export default function Home() {
   const [clickCount, setClickCount] = useState(0);
-  const [isEditing, setIsEditing] = useState(false);
   const [aboutText, setAboutText] = useState(`Del yoga aprendimos la calma.
 Del arte marcial, la disciplina.
 De la música, el lenguaje del alma.
@@ -32,8 +31,36 @@ A través de la armonización sonora, el yoga con música en vivo, las meditacio
 Una propuesta para quienes buscan armonía, serenidad y energía vital desde una mirada integral y respetuosa..`);
 
   const [eventClickCount, setEventClickCount] = useState(0);
-  const [isEventEditing, setIsEventEditing] = useState(false);
   const [events, setEvents] = useState<Event[]>([]); // SIEMPRE INICIA VACÍO
+  const [showEditAbout, setShowEditAbout] = useState(false);
+  const [showEditCarousel, setShowEditCarousel] = useState(false);
+  const [carouselImages, setCarouselImages] = useState([
+    {
+      src: "/imagenes_sobre_nosotros/IMG_20191208_161406_182.jpg",
+      alt: "Sesión de música y meditación"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/calimba.jpg",
+      alt: "Calimba - Instrumento de percusión"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/agua 5.jpg",
+      alt: "Meditación con sonidos del agua"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/instrumentos 5.jpg",
+      alt: "Colección de instrumentos"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/Gus.jpg",
+      alt: "Gus - Músico y terapeuta"
+    },
+    {
+      src: "/imagenes_sobre_nosotros/IMG-20191206-WA0042.jpg",
+      alt: "Momento de meditación y sonido"
+    }
+  ]);
+  const [carouselClickCount, setCarouselClickCount] = useState(0);
 
   const router = useRouter();
 
@@ -52,11 +79,30 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
     }
   }, []);
 
+  // Obtener el texto de Sobre Nosotros desde la base de datos
+  useEffect(() => {
+    fetch("/api/about")
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.text) setAboutText(data.text);
+      });
+  }, []);
+
+  // Cargar imágenes del carrusel desde la base de datos
+  useEffect(() => {
+    fetch("/api/carousel")
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        if (Array.isArray(data)) setCarouselImages(data);
+      })
+      .catch(() => setCarouselImages([]));
+  }, []);
+
   const handleTitleClick = () => {
     setClickCount(prev => {
       const newCount = prev + 1;
       if (newCount === 10) {
-        setIsEditing(true);
+        setShowEditAbout(true);
         return 0;
       }
       return newCount;
@@ -65,12 +111,11 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
 
   const handleSave = (newText: string) => {
     setAboutText(newText);
-    setIsEditing(false);
     // Here you would typically also save to your backend
   };
 
   const handleCancel = () => {
-    setIsEditing(false);
+    // Eliminadas referencias a setIsEditing y isEditing
   };
 
   const handleAddEvent = () => {
@@ -156,32 +201,28 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
     );
   }
 
-  const carouselImages = [
-    {
-      src: "/imagenes_sobre_nosotros/IMG_20191208_161406_182.jpg",
-      alt: "Sesión de música y meditación"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/calimba.jpg",
-      alt: "Calimba - Instrumento de percusión"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/agua 5.jpg",
-      alt: "Meditación con sonidos del agua"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/instrumentos 5.jpg",
-      alt: "Colección de instrumentos"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/Gus.jpg",
-      alt: "Gus - Músico y terapeuta"
-    },
-    {
-      src: "/imagenes_sobre_nosotros/IMG-20191206-WA0042.jpg",
-      alt: "Momento de meditación y sonido"
-    }
-  ];
+  // Lógica para 10 clicks en el carrusel
+  const handleCarouselTitleClick = () => {
+    setCarouselClickCount(prev => {
+      const newCount = prev + 1;
+      if (newCount === 10) {
+        setShowEditCarousel(true);
+        return 0;
+      }
+      return newCount;
+    });
+  };
+
+  // Guardar imágenes del carrusel en la base de datos
+  const handleSaveCarousel = async (images: { src: string; alt: string }[]) => {
+    await fetch("/api/carousel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ images })
+    });
+    setCarouselImages(images);
+    setShowEditCarousel(false);
+  };
 
   return (
     <EventosProvider>
@@ -194,7 +235,7 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
               src="/instrumento10.jpg"
               alt="Fondo"
               className="w-full h-full object-cover"
-              style={{ filter: "blur(2.5px) brightness(0.9)" }}
+              style={{ filter: "blur(1px) brightness(1)" }}
             />
             <div className="absolute inset-0 bg-black/50" />
           </div>
@@ -231,27 +272,47 @@ Una propuesta para quienes buscan armonía, serenidad y energía vital desde una
             >
               Sobre Nosotros
             </h2>
-            {isEditing ? (
+            {showEditAbout ? (
               <EditAboutForm
                 initialText={aboutText}
-                onSave={handleSave}
-                onCancel={handleCancel}
+                onSave={async (newText) => {
+                  await fetch("/api/about", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: newText })
+                  });
+                  setAboutText(newText);
+                  setShowEditAbout(false);
+                }}
+                onCancel={() => setShowEditAbout(false)}
               />
             ) : (
               <p className="mb-8 text-lg text-[var(--text-secondary)] max-w-xl whitespace-pre-line">
                 {aboutText}
               </p>
             )}
-            {/* <div className="flex gap-10 text-3xl text-[var(--sage-dark)]">
-           
-            <span title="Sonido">🔊</span>
-            <span title="Naturaleza">🌱</span>
-            <span title="Meditación">🧘</span>
-            <span title="Música">🎵</span>
-          </div> */}
           </div>
-          <div className="flex-1 flex justify-center">
-            <ImageCarousel images={carouselImages} />
+          <div className="flex-1 flex flex-col items-center">
+            <h3
+              className="text-xl font-semibold mb-2 cursor-pointer"
+              style={{ color: "var(--sage-dark)" }}
+              onClick={handleCarouselTitleClick}
+            >
+              Carrusel de imágenes
+            </h3>
+            {showEditCarousel ? (
+              <EditCarouselForm
+                initialImages={carouselImages}
+                onSave={handleSaveCarousel}
+                onCancel={() => setShowEditCarousel(false)}
+              />
+            ) : (
+              carouselImages.length === 0 ? (
+                <div className="text-center py-8 text-[var(--text-secondary)]">no hay imagenes</div>
+              ) : (
+                <ImageCarousel images={carouselImages} />
+              )
+            )}
           </div>
         </section>
 
