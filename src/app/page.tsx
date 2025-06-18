@@ -11,6 +11,7 @@ export default function Home() {
   const [showEditAbout, setShowEditAbout] = useState(false);
   const [aboutClickCount, setAboutClickCount] = useState(0);
   const [eventClickCount, setEventClickCount] = useState(0);
+  const [carouselClickCount, setCarouselClickCount] = useState(0);
 
   const router = useRouter();
 
@@ -37,8 +38,19 @@ export default function Home() {
     }
   }, [eventClickCount, router]);
 
+  useEffect(() => {
+    if (carouselClickCount === 10) {
+      router.push('/admin/carousel');
+      setCarouselClickCount(0);
+    }
+  }, [carouselClickCount, router]);
+
   const handleTitleClick = () => {
     setAboutClickCount(prev => prev + 1);
+  };
+
+  const handleCarouselTitleClick = () => {
+    setCarouselClickCount(prev => prev + 1);
   };
 
   const formatDateToSpanish = (dateStr: string) => {
@@ -62,8 +74,8 @@ export default function Home() {
     return (
       <section className="bg-[var(--beige-dark)] w-full px-4 sm:px-8 py-12 sm:py-16 flex-1 flex flex-col justify-end">
         <h2
-          className="text-3xl mb-6  text-center"
-          style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
+          className="text-3xl mb-6 font-roboto text-center"
+          style={{ color: "var(--sage-dark)" }}
           onClick={onSecretClick}
         >
           Próximos eventos
@@ -81,7 +93,7 @@ export default function Home() {
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="inline-block w-2 h-2 rounded-full bg-[var(--sage-dark)] mr-2"></span>
-                  <span className="font-semibold text-[var(--text-main)] text-lg" style={{ fontFamily: 'Roboto, Arial, sans-serif' }}>
+                  <span className="font-semibold text-[var(--text-main)] text-lg font-roboto" >
                     {formatDateToSpanish(event.date || "")}
                   </span>
                 </div>
@@ -138,18 +150,16 @@ export default function Home() {
             <h1
               className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 text-[var(--beige-dark)]! drop-shadow-lg -mt-8 md:-mt-12"
               style={{
-                fontFamily: "Roboto, Arial, sans-serif",
                 lineHeight: 1.1,
                 textShadow: "0 2px 16px rgba(0,0,0,0.18)",
               }}
             >
-              <span style={{ fontFamily: "Andalusia, serif", fontSize: "4.5em", fontWeight: "normal" }}>Agua</span>
+              <span className="font-andalusia text-[4.5em] font-normal">Agua</span>
               <br />
-              <span className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-roboto)", fontSize: "1em", fontWeight: "normal" }}  >Música para Ser</span>
+              <span className="text-2xl md:text-3xl font-roboto text-[1em] font-normal">Música para Ser</span>
             </h1>
             <button
-              className="mt-8 md:mt-12 px-6 md:px-8 py-2 rounded-full bg-white text-[var(--sage-dark)] font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--sage)] hover:text-white text-sm md:text-base"
-              style={{ fontFamily: "Roboto, Arial, sans-serif" }}
+              className="mt-8 md:mt-12 px-6 md:px-8 py-2 rounded-full bg-white text-[var(--sage-dark)] font-bold shadow-md border border-[var(--sage-dark)] transition hover:bg-[var(--sage)] hover:text-white text-sm md:text-base font-roboto"
             >
               <a href="https://linktr.ee/aguamusicaparaser" target="_blank" rel="noopener noreferrer">Escuchar ahora</a>
             </button>
@@ -160,8 +170,8 @@ export default function Home() {
         <section className="bg-[var(--beige-dark)] w-full flex flex-col md:flex-row items-center gap-8 px-8 py-16">
           <div className="flex-1">
             <h2
-              className="text-3xl mb-4"
-              style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--sage-dark)" }}
+              className="text-3xl mb-4 font-roboto"
+              style={{ color: "var(--sage-dark)" }}
               onClick={handleTitleClick}
             >
               Sobre Nosotros
@@ -219,10 +229,11 @@ export default function Home() {
         {/* VIDEOS */}
         <section className="bg-[var(--sage)] w-full px-8 py-16">
           <h2
-            className="text-3xl mb-6 text-center"
-            style={{ fontFamily: "Roboto, Arial, sans-serif", color: "var(--beige-dark)" }}
+            className="text-3xl mb-6 font-roboto text-center"
+            style={{ color: "var(--beige-dark)" }}
+            onClick={handleCarouselTitleClick}
           >
-            Videos
+            Carrusel
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* First YouTube Video Embed */}
