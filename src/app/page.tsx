@@ -233,7 +233,7 @@ export default function Home() {
             style={{ color: "var(--beige-dark)" }}
             onClick={handleCarouselTitleClick}
           >
-            Carrusel
+            Videos
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* First YouTube Video Embed */}
