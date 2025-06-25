@@ -8,6 +8,7 @@ import Image from "next/image";
 
 export default function Home() {
   const [aboutText, setAboutText] = useState('');
+  const [loadingAbout, setLoadingAbout] = useState(true);
   const [showEditAbout, setShowEditAbout] = useState(false);
   const [aboutClickCount, setAboutClickCount] = useState(0);
   const [eventClickCount, setEventClickCount] = useState(0);
@@ -17,11 +18,14 @@ export default function Home() {
 
   // Obtener el texto de Sobre Nosotros desde la base de datos
   useEffect(() => {
+    setLoadingAbout(true);
     fetch("/api/about")
       .then(res => res.json())
       .then(data => {
         if (data && data.text) setAboutText(data.text);
-      });
+        setLoadingAbout(false);
+      })
+      .catch(() => setLoadingAbout(false));
   }, []);
 
   useEffect(() => {
@@ -213,6 +217,13 @@ export default function Home() {
                 }}
                 onCancel={() => setShowEditAbout(false)}
               />
+            ) : loadingAbout ? (
+              <div className="mb-8 flex items-center justify-center min-h-[48px]">
+                <svg className="animate-spin h-6 w-6 text-[var(--text-secondary)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+              </div>
             ) : (
               <p className="mb-8 text-lg text-[var(--text-secondary)] max-w-xl whitespace-pre-line">
                 {aboutText}
